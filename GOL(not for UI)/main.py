@@ -4,12 +4,12 @@ import itertools
 import sys
 
 
-def getBoard(size, alive_cons):
-    return [[1 if (i, j) in alive_cons else 0
-             for j in range(size)]
-            for i in range(size)]
+# def getBoard(size, alive_cons):
+#     return [[1 if (i, j) in alive_cons else 0
+#              for j in range(size)]
+#             for i in range(size)]
 
-def getBoard2 (size, alive_cons):
+def getBoard (size, alive_cons):
     list1 = []
     list2 = []
     for i in range(size):
@@ -22,20 +22,38 @@ def getBoard2 (size, alive_cons):
         list2 = []
     return list1
 
+# def getNeighbours(con):
+#     x, y = con
+#     neighbors = [(x + i, y + j)
+#                  for i in range(-1, 2)
+#                  for j in range(-1, 2)
+#                  if not i == j == 0]
+#     return neighbors
+
 def getNeighbours(con):
     x, y = con
-    neighbors = [(x + i, y + j)
-                 for i in range(-1, 2)
-                 for j in range(-1, 2)
-                 if not i == j == 0]
+    neighbors = []
+    for i in range(-1, 2):
+        for j in range(-1, 2):
+            if not i == j == 0:
+                neighbors.append((x + i, y + j))
     return neighbors
 
 
+# def calculateAlive(con, alive_cons):
+#     filtered = filter(lambda x: x in alive_cons, getNeighbours(con))
+#     counter = 0
+#     for aliver in filtered:
+#         counter = counter + 1
+#     return counter
+
 def calculateAlive(con, alive_cons):
-    filtered = filter(lambda x: x in alive_cons, getNeighbours(con))
+    neighbors = getNeighbours(con)
     counter = 0
-    for aliver in filtered:
-        counter = counter + 1
+    for k in neighbors:
+        if k in alive_cons:
+            counter = counter + 1
+
     return counter
 
 
@@ -47,12 +65,25 @@ def isAliveDot(con, alive_cons):
     return False
 
 
+# def nextGeneration(alive_cons):
+#     board = itertools.chain(*map(getNeighbours, alive_cons))
+#     print("step1",board)
+#     new_board = set([con
+#                      for con in board
+#                      if isAliveDot(con, alive_cons)])
+#     print("step2", new_board)
+#     return list(new_board)
+
 def nextGeneration(alive_cons):
-    board = itertools.chain(*map(getNeighbours, alive_cons))
-    new_board = set([con
-                     for con in board
-                     if isAliveDot(con, alive_cons)])
-    return list(new_board)
+    board = []
+    for i in alive_cons:
+        board.append(getNeighbours(i))
+    new_board = []
+    for j in range(len(board)):
+        for con in board[j]:
+            if isAliveDot(con, alive_cons):
+                new_board.append(con)
+    return new_board
 
 # def is_correct_con(size, con):
 #     x, y = con
@@ -62,10 +93,10 @@ def nextGeneration(alive_cons):
 # def correct_cons(size, cons):
 #     return filter(lambda x: is_correct_con(size, x), cons)
 
-def printBoard(board):
-    for line in board:
-        print(line)
-    print
+# def printBoard(board):
+#     for line in board:
+#         print(line)
+#     print
 
 
 def main():
@@ -90,7 +121,7 @@ def main():
 
     #printBoard(getBoard(size, list))
     print(getBoard(size, list))
-    #print(getBoard2(size, list))
+
 
 
 if __name__ == '__main__':
