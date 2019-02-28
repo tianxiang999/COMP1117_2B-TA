@@ -88,8 +88,8 @@ def main():
     for _ in range(generation):
         list = nextGeneration(list)
 
-    printBoard(getBoard(size, list))
-    #print(getBoard(size, list))
+    #printBoard(getBoard(size, list))
+    print(getBoard(size, list))
     #print(getBoard2(size, list))
 
 
